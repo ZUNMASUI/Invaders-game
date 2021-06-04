@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>インベーダー</title>
+</head>
+
+<body>
+  <canvas id="canvas" style="background-color: rgb(76, 83, 83)" width="800" height="500"></canvas>
+  <script>
+    "use strict";
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    let enemyCharacters = [];
+    let bullets = [];
+    let trees = [];
+    const endImage = new Image();
+    endImage.src = "./ゲーム素材/gameover.jpeg";
+    const clearImage = new Image();
+    clearImage.src = "./ゲーム素材/gameclear.png";
+    const hp = 30;
+    const MUTEKI_INTERVAL = 5;
+
+    class Enemy {
+      constructor(x, y) {
+        this.x = x
+        this.y = y
+        this.speedX = 3;
+        this.speedY = 2.5;
+        this.image = new Image();
+        this.image.src = "./パズルゲーム素材/240x240/pipo-enemy003.png";
+      }
+      draw() {
+        this.randomMove();
+        ctx.drawImage(this.image, this.x, this.y, 70, 70)
+      }
+      randomMove() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x > 800 || this.x < 0) {
+          this.speedX = this.speedX * -1.2;
+        }
+        if (this.y > 500) {
+          this.y = -30;
+        }
+      }
+      calcDistance(bullet) {
+        return Math.sqrt(Math.pow(this.x - bullet.x, 2) + Math.pow(this.y - bullet.y, 2));
+      }
+      death() {
+        bullets.forEach((bullet) => {
+          var distance = this.calcDistance(bullet);
+          if (distance <= 35) {
+            enemyCharacters = enemyCharacters.filter((enemy) => enemy !== this)
+          }
+        })
+      }
+    }
+
+    function generateEnemy() {
+      for (let i = 0; i < 10; i++) {
+        let x = Math.floor(Math.random() * 800);
+        let y = Math.floor(Math.random() * 100);
+        const eneChara = new Enemy(x, y);
+        enemyCharacters.push(eneChara);
+      }
+    };
+    generateEnemy();
+
+    class Tree {
+      constructor(x, y) {
+        this.x = x
+        this.y = y
+        this.speedY = 5;
+        this.image = new Image();
+        this.image.src = "/Users/masuishintarou/Desktop/JavaScript道場/パズルゲーム素材/480x480/pipo-enemy007a.png";
+      }
+      move() {
+        this.y += this.speedY;
+        if (this.y > 500) {
+          this.y = -10;
+          this.x += 30
+          if (this.x > 800) {
+            this.x = 30
+          }
+        }
+      }
+      draw() {
+        this.move();
+        ctx.drawImage(this.image, this.x, this.y, 50, 50);
+      }
+    }
+    function generateTree1() {
+      for (let i = 0; i < 5; i++) {
+        let x = Math.floor(Math.random() * 300);
+        let y = Math.floor(Math.random() * 200);
+        const tree = new Tree(x, y);
+        trees.push(tree);
+      }
+    };
+    generateTree1();
+    function generateTree2() {
+      for (let i = 0; i < 5; i++) {
+        let x = Math.floor(Math.random(0.5) * 800);
+        let y = Math.floor(Math.random() * 200);
+        const tree = new Tree(x, y);
+        trees.push(tree);
+      }
+    };
+    generateTree2();
+
+    class Bullet {
+      constructor(x, y) {
+        this.x = x
+        this.y = y
+        this.speedY = -5;
+        this.image = new Image();
+        this.image.src = "./ゲーム素材/弾丸画像.png";
+      }
+      move() {
+        this.y += this.speedY;
+      }
+      draw() {
+        this.move();
+        ctx.drawImage(this.image, this.x, this.y, 20, 20);
+      }
+      calcDistance(enemy) {
+        return Math.sqrt(Math.pow(this.x - enemy.x, 2) + Math.pow(this.y - enemy.y, 2));
+      }
+      // death() {
+      //   enemyCharacters.forEach((enemy) => {
+      //     var distance = this.calcDistance(enemy);
+      //     if (distance <= 35 ) {
+      //       bullets = bullets.filter((bullet) => bullet !== this)
+      //     }
+      //   })
+      // }
+    }
+
+    class Character {
+      constructor(x, y) {
+        this.x = x
+        this.y = y
+        this.image = new Image();
+        this.image.src = "./ゲーム素材/騎士画像.png";
+        this.hp = hp
+        this.muteki_interval = 0;
+      }
+      draw() {
+        let flame = Math.floor(this.muteki_interval) % 2;
+        if (this.muteki_interval > 0 && flame === 0) {
+          ctx.drawImage(this.image, this.x, this.y, 70, 70);
+          ctx.fillStyle = '#f00';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        } else {
+          ctx.drawImage(this.image, this.x, this.y, 70, 70)
+        }
+        this.muteki_interval -= 0.1;
+      }
+      hitCheck() {
+        if (this.muteki_interval > 0) {
+          return
+        }
+        enemyCharacters.forEach((enemy) => {
+          var distance = this.calcDistance(enemy);
+          if (distance <= 40) {
+            this.hp -= 10;
+            this.muteki_interval = MUTEKI_INTERVAL
+            if (this.hp <= 0) {
+              ctx.drawImage(endImage, 0, 0, 800, 500);
+              stop();
+            }
+          }
+        })
+        trees.forEach((tree) => {
+          var distance = this.calcDistance(tree);
+          if (distance <= 40) {
+            this.hp -= 5;
+            this.muteki_interval = MUTEKI_INTERVAL
+            if (this.hp <= 0) {
+              ctx.drawImage(endImage, 0, 0, 800, 500);
+              stop();
+            }
+          }
+        })
+        if (enemyCharacters.length === 0) {
+          ctx.drawImage(clearImage, 0, 0, 800, 500);
+          stop();
+        }
+      }
+      muteki() {
+        if (hp > 0 && this.muteki_interval == 0) {
+          hitCheck();
+        }
+        if (this.muteki_interval > 0) {
+          this.muteki_interval--;
+        }
+      }
+      calcDistance(enemy) {
+        return Math.sqrt(Math.pow(this.x - enemy.x, 2) + Math.pow(this.y - enemy.y, 2));
+      }
+      attack() {
+        const bullet = new Bullet(this.x, this.y - 30);
+        bullets.push(bullet)
+      }
+    }
+    const chara = new Character(350, 400);
+    function keyDown(event) {
+      console.log(event.code)
+      switch (event.code) {
+        case "ArrowRight":
+          chara.x += 30;
+          break;
+        case "ArrowLeft":
+          chara.x -= 30;
+          break;
+        case "ArrowUp":
+          chara.y -= 15;
+          break;
+        case "ArrowDown":
+          chara.y += 15;
+          break;
+        case "Space":
+          chara.attack();
+          break;
+        default:
+      }
+    };
+    window.onkeydown = keyDown
+    // setInterval(() => {
+    // }, 33) // 30FPS
+
+    function mainloop() {
+      ctx.clearRect(0, 0, 800, 500)
+      chara.draw();
+      chara.hitCheck();
+      enemyCharacters.forEach((enemy) => {
+        enemy.draw();
+        enemy.death();
+      });
+      bullets.forEach((bullet) => {
+        bullet.draw();
+        // bullet.death();
+      });
+      trees.forEach((tree) => {
+        tree.draw();
+      });
+      requestAnimationFrame(mainloop);
+    }
+    mainloop();
+
+    function stop() {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+
+  </script>
+</body>
+
+</html>
