@@ -18,9 +18,9 @@
     let bullets = [];
     let trees = [];
     const endImage = new Image();
-    endImage.src = "./ゲーム素材/gameover.jpeg";
+    endImage.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/gameover.jpeg";
     const clearImage = new Image();
-    clearImage.src = "./ゲーム素材/gameclear.png";
+    clearImage.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/gameclear.png";
     const hp = 30;
     const MUTEKI_INTERVAL = 5;
 
@@ -31,7 +31,7 @@
         this.speedX = 3;
         this.speedY = 2.5;
         this.image = new Image();
-        this.image.src = "./パズルゲーム素材/240x240/pipo-enemy003.png";
+        this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/pipo-enemy003.png";
       }
       draw() {
         this.randomMove();
@@ -76,7 +76,7 @@
         this.y = y
         this.speedY = 5;
         this.image = new Image();
-        this.image.src = "/Users/masuishintarou/Desktop/JavaScript道場/パズルゲーム素材/480x480/pipo-enemy007a.png";
+        this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/pipo-enemy007a.png";
       }
       move() {
         this.y += this.speedY;
@@ -118,7 +118,7 @@
         this.y = y
         this.speedY = -5;
         this.image = new Image();
-        this.image.src = "./ゲーム素材/弾丸画像.png";
+        this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/弾丸画像.png";
       }
       move() {
         this.y += this.speedY;
@@ -145,7 +145,7 @@
         this.x = x
         this.y = y
         this.image = new Image();
-        this.image.src = "./ゲーム素材/騎士画像.png";
+        this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/騎士画像.png";
         this.hp = hp
         this.muteki_interval = 0;
       }
