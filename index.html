@@ -16,7 +16,7 @@
     const ctx = canvas.getContext("2d");
     let enemyCharacters = []; //敵キャラの配列要素が入る配列
     let bullets = [];//生成された攻撃の弾の情報が入る配列
-    let trees = []; //生成された障害物の木の情報が入る配列
+    // let trees = []; //生成された障害物の木の情報が入る配列
     const endImage = new Image();//ゲームオーバの情報を入れる変数
     endImage.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/gameover.jpeg";
     const clearImage = new Image();//ゲームクリアの情報を入れる変数
@@ -70,75 +70,75 @@
     };
     generateEnemy();
 
-    class Tree {//障害物の木のクラス
-      constructor(x, y) {
-        this.x = x
-        this.y = y
-        this.speedY = 5;
-        this.image = new Image();
-        this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/pipo-enemy007a.png";
-      }
-      move() {//動きのメソッド
-        this.y += this.speedY;
-        if (this.y > 500) {
-          this.y = -10;
-          this.x += 30
-          if (this.x > 800) {
-            this.x = 30
-          }
-        }
-      }
-      draw() {  //描くメソッド
-        this.move();
-        ctx.drawImage(this.image, this.x, this.y, 50, 50);
-      }
-    }
-    function generateTree1() {  //木の配列にx.y座標を格納する関数。その１
-      for (let i = 0; i < 5; i++) {
-        let x = Math.floor(Math.random() * 300);
-        let y = Math.floor(Math.random() * 200);
-        const tree = new Tree(x, y);
-        trees.push(tree);
-      }
-    };
-    generateTree1();
-    function generateTree2() {  //木の配列にx.y座標を格納する関数。その2
-      for (let i = 0; i < 5; i++) {
-        let x = Math.floor(Math.random(0.5) * 800);
-        let y = Math.floor(Math.random() * 200);
-        const tree = new Tree(x, y);
-        trees.push(tree);
-      }
-    };
-    generateTree2();
+    // class Tree {//障害物の木のクラス
+    //   constructor(x, y) {
+    //     this.x = x
+    //     this.y = y
+    //     this.speedY = 5;
+    //     this.image = new Image();
+    //     this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/pipo-enemy007a.png";
+    //   }
+    //   move() {//動きのメソッド
+    //     this.y += this.speedY;
+    //     if (this.y > 500) {
+    //       this.y = -10;
+    //       this.x += 30
+    //       if (this.x > 800) {
+    //         this.x = 30
+    //       }
+    //     }
+    //   }
+    //   draw() {  //描くメソッド
+    //     this.move();
+    //     ctx.drawImage(this.image, this.x, this.y, 50, 50);
+    //   }
+    // }
+    // function generateTree1() {  //木の配列にx.y座標を格納する関数。その１
+    //   for (let i = 0; i < 5; i++) {
+    //     let x = Math.floor(Math.random() * 300);
+    //     let y = Math.floor(Math.random() * 200);
+    //     const tree = new Tree(x, y);
+    //     trees.push(tree);
+    //   }
+    // };
+    // generateTree1();
+    // function generateTree2() {  //木の配列にx.y座標を格納する関数。その2
+    //   for (let i = 0; i < 5; i++) {
+    //     let x = Math.floor(Math.random(0.5) * 800);
+    //     let y = Math.floor(Math.random() * 200);
+    //     const tree = new Tree(x, y);
+    //     trees.push(tree);
+    //   }
+    // };
+    // generateTree2();
 
-    class Bullet {  //攻撃の為の弾のクラス
-      constructor(x, y) {
-        this.x = x
-        this.y = y
-        this.speedY = -5;
-        this.image = new Image();
-        this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/弾丸画像.png";
-      }
-      move() { //弾の動きのメソッド
-        this.y += this.speedY;
-      }
-      draw() {  //描くメソッド
-        this.move();
-        ctx.drawImage(this.image, this.x, this.y, 20, 20);
-      }
-      calcDistance(enemy) {
-        return Math.sqrt(Math.pow(this.x - enemy.x, 2) + Math.pow(this.y - enemy.y, 2));
-      }
-      // death() {
-      //   enemyCharacters.forEach((enemy) => {
-      //     var distance = this.calcDistance(enemy);
-      //     if (distance <= 35 ) {
-      //       bullets = bullets.filter((bullet) => bullet !== this)
-      //     }
-      //   })
-      // }
-    }
+    // class Bullet {  //攻撃の為の弾のクラス
+    //   constructor(x, y) {
+    //     this.x = x
+    //     this.y = y
+    //     this.speedY = -5;
+    //     this.image = new Image();
+    //     this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/弾丸画像.png";
+    //   }
+    //   move() { //弾の動きのメソッド
+    //     this.y += this.speedY;
+    //   }
+    //   draw() {  //描くメソッド
+    //     this.move();
+    //     ctx.drawImage(this.image, this.x, this.y, 20, 20);
+    //   }
+    //   calcDistance(enemy) {
+    //     return Math.sqrt(Math.pow(this.x - enemy.x, 2) + Math.pow(this.y - enemy.y, 2));
+    //   }
+    //   // death() {
+    //   //   enemyCharacters.forEach((enemy) => {
+    //   //     var distance = this.calcDistance(enemy);
+    //   //     if (distance <= 35 ) {
+    //   //       bullets = bullets.filter((bullet) => bullet !== this)
+    //   //     }
+    //   //   })
+    //   // }
+    // }
 
     class Character { //自機キャラのクラス
       constructor(x, y) {
