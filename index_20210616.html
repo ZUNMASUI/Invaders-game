@@ -16,18 +16,13 @@
     const ctx = canvas.getContext("2d");
     let enemyCharacters = []; //敵キャラの配列要素が入る配列
     let bullets = [];//生成された攻撃の弾の情報が入る配列
+    // let trees = []; //生成された障害物の木の情報が入る配列
     const endImage = new Image();//ゲームオーバの情報を入れる変数
     endImage.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/gameover.jpeg";
     const clearImage = new Image();//ゲームクリアの情報を入れる変数
     clearImage.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/gameclear.png";
     const hp = 30;//自機の体力
     const MUTEKI_INTERVAL = 5;//ダメージを受けた後の無敵時間
-
-    class Game {
-     calcDistance(){
-      return Math.sqrt(Math.pow(this.x - bullet.x, 2) + Math.pow(this.y - bullet.y, 2));
-     }
-    }
 
     class Enemy {  //敵キャラのクラス
       constructor(x, y) {
@@ -38,9 +33,11 @@
         this.image = new Image();//敵キャラの画像情報についての変数
         this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/pipo-enemy003.png";
       }
-
-      //決まった一定の動きをした結果を描画する
-      move() {
+      draw() { //描くメソッド
+        this.randomMove();
+        ctx.drawImage(this.image, this.x, this.y, 70, 70)
+      }
+      randomMove() {//ランダムで動くメソッド
         this.x += this.speedX;
         this.y += this.speedY;
         if (this.x > 800 || this.x < 0) {
@@ -49,11 +46,11 @@
         if (this.y > 500) {
           this.y = -30;
         }
-        ctx.drawImage(this.image, this.x, this.y, 70, 70)
       }
-
-      //自分自身の描画を消す 変更要！！
-      death() {
+      calcDistance(bullet) {//三平方の定理を使って、距離を判定するメソッド
+        return Math.sqrt(Math.pow(this.x - bullet.x, 2) + Math.pow(this.y - bullet.y, 2));
+      }
+      death() {//死ぬ、消滅するメソッド
         bullets.forEach((bullet) => {
           var distance = this.calcDistance(bullet);
           if (distance <= 35) {
@@ -63,8 +60,7 @@
       }
     }
 
-    //敵キャラの配列にランダムでx.y座標を格納する関数
-    function generateEnemy() {
+    function generateEnemy() {//敵キャラの配列にランダムでx.y座標を格納する関数
       for (let i = 0; i < 10; i++) {
         let x = Math.floor(Math.random() * 800);
         let y = Math.floor(Math.random() * 100);
@@ -74,9 +70,77 @@
     };
     generateEnemy();
 
+    // class Tree {//障害物の木のクラス
+    //   constructor(x, y) {
+    //     this.x = x
+    //     this.y = y
+    //     this.speedY = 5;
+    //     this.image = new Image();
+    //     this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/pipo-enemy007a.png";
+    //   }
+    //   move() {//動きのメソッド
+    //     this.y += this.speedY;
+    //     if (this.y > 500) {
+    //       this.y = -10;
+    //       this.x += 30
+    //       if (this.x > 800) {
+    //         this.x = 30
+    //       }
+    //     }
+    //   }
+    //   draw() {  //描くメソッド
+    //     this.move();
+    //     ctx.drawImage(this.image, this.x, this.y, 50, 50);
+    //   }
+    // }
+    // function generateTree1() {  //木の配列にx.y座標を格納する関数。その１
+    //   for (let i = 0; i < 5; i++) {
+    //     let x = Math.floor(Math.random() * 300);
+    //     let y = Math.floor(Math.random() * 200);
+    //     const tree = new Tree(x, y);
+    //     trees.push(tree);
+    //   }
+    // };
+    // generateTree1();
+    // function generateTree2() {  //木の配列にx.y座標を格納する関数。その2
+    //   for (let i = 0; i < 5; i++) {
+    //     let x = Math.floor(Math.random(0.5) * 800);
+    //     let y = Math.floor(Math.random() * 200);
+    //     const tree = new Tree(x, y);
+    //     trees.push(tree);
+    //   }
+    // };
+    // generateTree2();
 
-    //自機キャラのクラス
-    class Character {
+    // class Bullet {  //攻撃の為の弾のクラス
+    //   constructor(x, y) {
+    //     this.x = x
+    //     this.y = y
+    //     this.speedY = -5;
+    //     this.image = new Image();
+    //     this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/弾丸画像.png";
+    //   }
+    //   move() { //弾の動きのメソッド
+    //     this.y += this.speedY;
+    //   }
+    //   draw() {  //描くメソッド
+    //     this.move();
+    //     ctx.drawImage(this.image, this.x, this.y, 20, 20);
+    //   }
+    //   calcDistance(enemy) {
+    //     return Math.sqrt(Math.pow(this.x - enemy.x, 2) + Math.pow(this.y - enemy.y, 2));
+    //   }
+    //   // death() {
+    //   //   enemyCharacters.forEach((enemy) => {
+    //   //     var distance = this.calcDistance(enemy);
+    //   //     if (distance <= 35 ) {
+    //   //       bullets = bullets.filter((bullet) => bullet !== this)
+    //   //     }
+    //   //   })
+    //   // }
+    // }
+
+    class Character { //自機キャラのクラス
       constructor(x, y) {
         this.x = x
         this.y = y
@@ -85,9 +149,7 @@
         this.hp = hp
         this.muteki_interval = 0;
       }
-
-      //自機が【入力に応じて】動いた結果を描画する
-      move() {
+      draw() {  //描くメソッド
         let flame = Math.floor(this.muteki_interval) % 2;
         if (this.muteki_interval > 0 && flame === 0) {
           ctx.drawImage(this.image, this.x, this.y, 70, 70);
@@ -96,21 +158,9 @@
         } else {
           ctx.drawImage(this.image, this.x, this.y, 70, 70)
         }
+        this.muteki_interval -= 0.1;
       }
-
-
-      //体力を減少させる
-      damege(){
-
-      }
-
-      //自分をcanvasから消す
-      death(){
-
-      }
-
-      //当たり判定のメソッド
-      hitCheck() {
+      hitCheck() { //当たり判定のメソッド
         if (this.muteki_interval > 0) {
           return
         }
@@ -152,9 +202,7 @@
       calcDistance(enemy) {  //三平方の定理を使って、距離を判定するメソッド
         return Math.sqrt(Math.pow(this.x - enemy.x, 2) + Math.pow(this.y - enemy.y, 2));
       }
-
-      //弾オブジェクトのインスタンスを生成する
-      attack() {
+      attack() { //攻撃に関するメソッド
         const bullet = new Bullet(this.x, this.y - 30);
         bullets.push(bullet)
       }
@@ -183,7 +231,8 @@
       }
     };
     window.onkeydown = keyDown
-
+    // setInterval(() => {
+    // }, 33) // 30FPS
 
     function mainloop() { // マイフレーム実行する関数
       ctx.clearRect(0, 0, 800, 500)
@@ -197,7 +246,9 @@
         bullet.draw();
         // bullet.death();
       });
-
+      trees.forEach((tree) => {
+        tree.draw();
+      });
       requestAnimationFrame(mainloop);
     }
     mainloop();
