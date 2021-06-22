@@ -175,17 +175,17 @@
             }
           }
         })
-        trees.forEach((tree) => {  //障害物の木との距離がどれくらいから当たりかのコード
-          var distance = this.calcDistance(tree);
-          if (distance <= 40) {
-            this.hp -= 5;
-            this.muteki_interval = MUTEKI_INTERVAL
-            if (this.hp <= 0) {
-              ctx.drawImage(endImage, 0, 0, 800, 500);
-              stop();
-            }
-          }
-        })
+        // trees.forEach((tree) => {  //障害物の木との距離がどれくらいから当たりかのコード
+        //   var distance = this.calcDistance(tree);
+        //   if (distance <= 40) {
+        //     this.hp -= 5;
+        //     this.muteki_interval = MUTEKI_INTERVAL
+        //     if (this.hp <= 0) {
+        //       ctx.drawImage(endImage, 0, 0, 800, 500);
+        //       stop();
+        //     }
+        //   }
+        // })
         if (enemyCharacters.length === 0) { //敵キャラが全滅した場合のコード
           ctx.drawImage(clearImage, 0, 0, 800, 500);
           stop();
@@ -246,9 +246,8 @@
         bullet.draw();
         // bullet.death();
       });
-      trees.forEach((tree) => {
-        tree.draw();
-      });
+      // trees.forEach((tree) => {
+      //   tree.draw();
       requestAnimationFrame(mainloop);
     }
     mainloop();

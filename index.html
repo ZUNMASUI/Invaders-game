@@ -9,13 +9,12 @@
 </head>
 
 <body>
-  <canvas id="canvas" style="background-color: rgb(76, 83, 83)" width="800" height="500"></canvas>
+  <canvas id="canvas" style="background-color: rgb(149, 154, 154)" width="800" height="500"></canvas>
   <script>
     "use strict";
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
-    let enemyCharacters = []; //敵キャラの配列要素が入る配列
     let bullets = [];//生成された攻撃の弾の情報が入る配列
 
     const endImage = new Image();//ゲームオーバの情報を入れる変数
@@ -29,6 +28,10 @@
 
     //ゲーム全体をコントロールクラス  このクラスの役割　どのようなメソッドが必要　その役割を整理する　どんな順番で動かすのか
     class Game {
+      constructor() {
+        this.enemyCharacters = [];
+      }
+
 
       //初期化 まず初めに実行される 自機キャラと敵キャラを初期位置に配置する。
       initialize() {
@@ -41,9 +44,9 @@
           this.enemyCharacters.push(eneChara);
           ctx.drawImage(eneChara.image, eneChara.x, eneChara.y, 70, 70)
         }
-        ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70)
-         console.log(this.chara);
-         console.log(this.enemyCharacters);
+        //ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70)
+        console.log(this.chara);
+        console.log(this.enemyCharacters);
       }
 
       //三平方の定理を使って、距離を判定するメソッド
@@ -179,32 +182,6 @@
         this.hp -= 10;
       }
 
-      // //当たり判定のメソッド
-      // hitCheck() {
-      //   if (this.muteki_interval > 0) {
-      //     return
-      //   }
-      //   enemyCharacters.forEach((enemy) => { //敵キャラとの距離がどれくらいから当たりかのコード
-      //     var distance = this.calcDistance(enemy);
-      //     if (distance <= 40) {
-      //       this.hp -= 10;
-      //       this.muteki_interval = MUTEKI_INTERVAL
-      //       if (this.hp <= 0) {
-      //         ctx.drawImage(endImage, 0, 0, 800, 500);
-      //         stop();
-      //       }
-      //     }
-      //   })
-      // }
-      // muteki() { //無敵判定に関するタイミングでのコード
-      //   if (hp > 0 && this.muteki_interval == 0) {
-      //     hitCheck();
-      //   }
-      //   if (this.muteki_interval > 0) {
-      //     this.muteki_interval--;
-      //   }
-      // }
-
       //弾オブジェクトのインスタンスを生成するメソッド
       attack() {
         const bullet = new Bullet(this.x, this.y - 30);
@@ -212,7 +189,8 @@
       }
     }
 
-
+const chara = new Character(400,440,30 );
+ctx.drawImage(chara.image, chara.x, chara.y, 30, 30)
 
     //自機キャラが攻撃する時に出現する弾のクラス
     class Bullet {
