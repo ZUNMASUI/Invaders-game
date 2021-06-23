@@ -44,7 +44,7 @@
           this.enemyCharacters.push(eneChara);
           ctx.drawImage(eneChara.image, eneChara.x, eneChara.y, 70, 70)
         }
-        //ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70)
+        ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70)
         console.log(this.chara);
         console.log(this.enemyCharacters);
       }
@@ -55,35 +55,35 @@
       }
 
       //マイフレーム実行するメソッド
-      mainLoop() {
-        const loopId = requestAnimationFrame(this.mainLoop)
-        // 描画を消す
-        ctx.clearRect();
-        // 敵が動く
-        this.enemies.forEach(enemy => {
-          this.enemy.move();
-        });
-        this.bullets.forEach(bullet => {
-          this.bullet.move();
-        });
-        // 敵と弾が当たったか判定 （判定メソッドはこれから実装する必要あり）
-        if (this.isContact()) {
-          // 弾と敵を消す処理
-        }
-        // 自機と敵が当たったか判定　（判定メソッドはこれから実装する必要あり）
-        if (this.isContact()) {
-          // 自機のHPを減らす処理
-          this.chara.damege()
-        }
-        // HP0の判定
-        if (this.isGameOver()) {
-          // ゲームオーバー処理
-        }
-        // 敵キャラ0の判定
-        if (!this.enemies) {
-          // ゲームクリア処理
-        }
-      }
+      // mainLoop() {
+      //   const loopId = requestAnimationFrame(this.mainLoop)
+      //   // 描画を消す
+      //   ctx.clearRect();
+      //   // 敵が動く
+      //   this.enemies.forEach(enemy => {
+      //     this.enemy.move();
+      //   });
+      //   this.bullets.forEach(bullet => {
+      //     this.bullet.move();
+      //   });
+      //   // 敵と弾が当たったか判定 （判定メソッドはこれから実装する必要あり）
+      //   if (this.isContact()) {
+      //     // 弾と敵を消す処理
+      //   }
+      //   // 自機と敵が当たったか判定　（判定メソッドはこれから実装する必要あり）
+      //   if (this.isContact()) {
+      //     // 自機のHPを減らす処理
+      //     this.chara.damege()
+      //   }
+      //   // HP0の判定
+      //   if (this.isGameOver()) {
+      //     // ゲームオーバー処理
+      //   }
+      //   // 敵キャラ0の判定
+      //   if (!this.enemies) {
+      //     // ゲームクリア処理
+      //   }
+      // }
 
 
       //指定したデータを描くメソッド
@@ -103,14 +103,6 @@
         }
       }
 
-      // 複数の要素を生成するメソッド敵とか障害物とか
-      // generate() {
-      //   for (let i = 0; i < 10; i++) {
-      //     let x = Math.floor(Math.random() * 800);
-      //     let y = Math.floor(Math.random() * 100);
-      //     const eneChara = new Enemy(x, y);
-      //     enemyCharacters.push(eneChara);
-      //   }
     }
 
     //敵キャラクラス
@@ -189,9 +181,6 @@
       }
     }
 
-const chara = new Character(400,440,30 );
-ctx.drawImage(chara.image, chara.x, chara.y, 30, 30)
-
     //自機キャラが攻撃する時に出現する弾のクラス
     class Bullet {
       constructor(x, y) {
@@ -214,6 +203,14 @@ ctx.drawImage(chara.image, chara.x, chara.y, 30, 30)
     //ゲームクラスからインスタンスを生成し変数gameへ格納　その後初めのinitializeメソッドの実行
     const game = new Game();
     game.initialize();
+
+
+    // function mainloop() { // マイフレーム実行する関数
+    //   //ctx.clearRect(0, 0, 800, 500)
+    //   game.initialize();
+    //   requestAnimationFrame(mainloop);
+    // }
+    // mainloop();
 
 
   </script>
