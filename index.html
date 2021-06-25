@@ -30,9 +30,6 @@
     class Game {
       constructor() {
         this.enemyCharacters = [];
-        this.image.onload = () => {
-          ctx.drawImage(this.image, this.x, this.y, 70, 70)
-        }
 
       }
 
@@ -46,48 +43,36 @@
           let y = Math.floor(Math.random() * 100);
           const eneChara = new Enemy(x, y);
           this.enemyCharacters.push(eneChara);
-          //ctx.drawImage(eneChara.image, eneChara.x, eneChara.y, 70, 70)
         }
 
-        //ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70)
-
       }
-
+      //自機キャラの動きと弾のインスタンスの生成　スペースを押して
       //三平方の定理を使って、距離を判定するメソッド
       calcDistance() {
         return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
       }
 
       //マイフレーム実行するメソッド
-      // mainLoop() {
-      //   const loopId = requestAnimationFrame(this.mainLoop)
-      //   // 描画を消す
-      //   ctx.clearRect();
-      //   // 敵が動く
-      //   this.enemies.forEach(enemy => {
-      //     this.enemy.move();
-      //   });
-      //   this.bullets.forEach(bullet => {
-      //     this.bullet.move();
-      //   });
-      //   // 敵と弾が当たったか判定 （判定メソッドはこれから実装する必要あり）
-      //   if (this.isContact()) {
-      //     // 弾と敵を消す処理
-      //   }
-      //   // 自機と敵が当たったか判定　（判定メソッドはこれから実装する必要あり）
-      //   if (this.isContact()) {
-      //     // 自機のHPを減らす処理
-      //     this.chara.damege()
-      //   }
-      //   // HP0の判定
-      //   if (this.isGameOver()) {
-      //     // ゲームオーバー処理
-      //   }
-      //   // 敵キャラ0の判定
-      //   if (!this.enemies) {
-      //     // ゲームクリア処理
-      //   }
-      // }
+      mainLoop() {
+           
+
+        // 描画を消す
+        ctx.clearRect(0, 0, 800, 500);
+
+
+        // 敵が動く
+        this.enemyCharacters.forEach(enemy => {
+          enemy.move();
+        });
+
+       //自機キャラが描かれる
+       ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70);
+
+
+       //自機キャラの動き
+
+       //弾のインスタンスを生成
+      }
 
 
       //指定したデータを描くメソッド
@@ -118,6 +103,9 @@
         this.speedY = 2.5;//マイフレームy座標を動く速さ
         this.image = new Image();//敵キャラの画像情報についての変数 ★画像の横と縦を変数か
         this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/pipo-enemy003.png";
+        this.image.onload = () => {
+          ctx.drawImage(this.image, this.x, this.y, 70, 70)
+        }
       }
 
       //決まった一定の動きをした結果を描画する
@@ -144,6 +132,9 @@
         this.image = new Image();
         this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/騎士画像.png";
         this.muteki_interval = 0;
+        this.image.onload = () => {
+          ctx.drawImage(this.image, this.x, this.y, 70, 70)
+        }
       }
 
       //自機が入力に応じて何かしら動く
@@ -207,14 +198,8 @@
     //ゲームクラスからインスタンスを生成し変数gameへ格納　その後初めのinitializeメソッドの実行
     const game = new Game();
     game.initialize();
+    game.mainLoop();
 
-
-    // function mainloop() { // マイフレーム実行する関数
-    //   //ctx.clearRect(0, 0, 800, 500)
-    //   game.initialize();
-    //   requestAnimationFrame(mainloop);
-    // }
-    // mainloop();
 
 
   </script>
