@@ -15,7 +15,6 @@
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
-    let bullets = [];//生成された攻撃の弾の情報が入る配列
 
     const endImage = new Image();//ゲームオーバの情報を入れる変数
     endImage.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/gameover.jpeg";
@@ -29,13 +28,13 @@
     //ゲーム全体をコントロールクラス  このクラスの役割　どのようなメソッドが必要　その役割を整理する　どんな順番で動かすのか
     class Game {
       constructor() {
-        this.enemyCharacters = [];
-
+        this.enemyCharacters = []; //生成された敵のインスタンスが入る配列
+        this.bullets = []; //生成された攻撃の弾のインスタンスが入る配列
       }
 
 
       //初期化 まず初めに実行される 自機キャラと敵キャラを初期位置に配置する。
-      initialize() {
+      initialize = () => {
         const Chara = new Character(400, 400, 30);
         this.chara = Chara
         for (let i = 0; i < 10; i++) {
@@ -48,13 +47,13 @@
       }
       //自機キャラの動きと弾のインスタンスの生成　スペースを押して
       //三平方の定理を使って、距離を判定するメソッド
-      calcDistance() {
+      calcDistance = () => {
         return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
       }
 
       //マイフレーム実行するメソッド
-      mainLoop() {
-           
+      mainLoop = () => {
+
 
         // 描画を消す
         ctx.clearRect(0, 0, 800, 500);
@@ -65,28 +64,28 @@
           enemy.move();
         });
 
-       //自機キャラが描かれる
-       ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70);
+        //自機キャラが描かれる
+        ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70);
 
 
-       //自機キャラの動き
+        //自機キャラの動き
 
-       //弾のインスタンスを生成
+        //弾のインスタンスを生成
       }
 
 
       //指定したデータを描くメソッド
-      draw() {
+      draw = () => {
       }
 
       //ゲームオーバー画面を呼ぶメソッド
-      gameover() {
+      gameover = () => {
         if (hp <= 0) {
           ctx.drawImage(endImage, 0, 0, 800, 500);
         }
       }
       //ゲームクリア画面を呼ぶメソッド
-      gameclear() {
+      gameclear = () => {
         if (enemyCharacters.length === 0) {
           ctx.drawImage(clearImage, 0, 0, 800, 500);
         }
@@ -109,7 +108,7 @@
       }
 
       //決まった一定の動きをした結果を描画する
-      move() {
+      move = () => {
         this.x += this.speedX;
         this.y += this.speedY;
         if (this.x > 800 || this.x < 0) {
@@ -138,7 +137,7 @@
       }
 
       //自機が入力に応じて何かしら動く
-      input(event) {
+      input = event => {
         switch (event.code) {
           case "ArrowRight":
             this.x += 20;
@@ -165,12 +164,12 @@
 
 
       //体力を減少させる
-      damege() {
+      damege = () => {
         this.hp -= 10;
       }
 
       //弾オブジェクトのインスタンスを生成するメソッド
-      attack() {
+      attack = () => {
         const bullet = new Bullet(this.x, this.y - 30);
         bullets.push(bullet)
       }
@@ -188,7 +187,7 @@
 
 
       //決まった一定の動きをした結果を描画する
-      move() {
+      move = () => {
         this.y += this.speedY;
         ctx.drawImage(this.image, this.x, this.y, 30, 30)
       }
