@@ -30,6 +30,8 @@
       constructor() {
         this.enemyCharacters = []; //生成された敵のインスタンスが入る配列
         this.bullets = []; //生成された攻撃の弾のインスタンスが入る配列
+        window.onkeydown = () => { 
+          this.chara.input(event)}
       }
 
 
@@ -54,7 +56,6 @@
       //マイフレーム実行するメソッド
       mainLoop = () => {
 
-
         // 描画を消す
         ctx.clearRect(0, 0, 800, 500);
 
@@ -64,13 +65,19 @@
           enemy.move();
         });
 
-        //自機キャラが描かれる
+        //自機キャラが描かれる。初期位置
         ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70);
 
 
         //自機キャラの動き
 
-        //弾のインスタンスを生成
+        window.onkeydown = this.chara.input();
+
+        //自機キャラの攻撃を実行し、弾のインスタンスを生成
+
+        this.bullets.forEach(bullet => {
+          bullet.move();
+        });
       }
 
 
@@ -92,6 +99,61 @@
       }
 
     }
+
+    //自機キャラのクラス
+    class Character {
+      constructor(x, y, hp) {
+        this.x = x
+        this.y = y
+        this.hp = hp
+        this.image = new Image();
+        this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/騎士画像.png";
+        this.muteki_interval = 0;
+        this.image.onload = () => {
+          ctx.drawImage(this.image, this.x, this.y, 70, 70)
+        }
+      }
+
+      //自機が入力に応じて何かしら動く
+      input = event => {
+        console.log(event)
+        switch (event.code) {
+          case "ArrowRight":
+            this.x += 20;
+            ctx.drawImage(this.image, this.x, this.y, 70, 70)
+            break;
+          case "ArrowLeft":
+            this.x -= 20;
+            ctx.drawImage(this.image, this.x, this.y, 70, 70)
+            break;
+          case "ArrowUp":
+            this.y -= 20;
+            ctx.drawImage(this.image, this.x, this.y, 70, 70)
+            break;
+          case "ArrowDown":
+            this.y += 20;
+            ctx.drawImage(this.image, this.x, this.y, 70, 70)
+            break;
+          case "Space":
+            this.attack();
+            break;
+          default:
+        }
+      }
+
+      //体力を減少させる
+      damege = () => {
+        this.hp -= 10;
+      }
+
+      //弾オブジェクトのインスタンスを生成するメソッド
+      attack = () => {
+        const bullet = new Bullet(this.x, this.y - 30);
+        bullets.push(bullet)
+      }
+    }
+
+
 
     //敵キャラクラス
     class Enemy {
@@ -122,58 +184,6 @@
     }
 
 
-    //自機キャラのクラス
-    class Character {
-      constructor(x, y, hp) {
-        this.x = x
-        this.y = y
-        this.hp = hp
-        this.image = new Image();
-        this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/騎士画像.png";
-        this.muteki_interval = 0;
-        this.image.onload = () => {
-          ctx.drawImage(this.image, this.x, this.y, 70, 70)
-        }
-      }
-
-      //自機が入力に応じて何かしら動く
-      input = event => {
-        switch (event.code) {
-          case "ArrowRight":
-            this.x += 20;
-            ctx.drawImage(this.image, this.x, this.y, 70, 70)
-            break;
-          case "ArrowLeft":
-            this.x -= 20;
-            ctx.drawImage(this.image, this.x, this.y, 70, 70)
-            break;
-          case "ArrowUp":
-            this.y -= 20;
-            ctx.drawImage(this.image, this.x, this.y, 70, 70)
-            break;
-          case "ArrowDown":
-            this.y += 20;
-            ctx.drawImage(this.image, this.x, this.y, 70, 70)
-            break;
-          case "Space":
-            this.attack();
-            break;
-          default:
-        }
-      }
-
-
-      //体力を減少させる
-      damege = () => {
-        this.hp -= 10;
-      }
-
-      //弾オブジェクトのインスタンスを生成するメソッド
-      attack = () => {
-        const bullet = new Bullet(this.x, this.y - 30);
-        bullets.push(bullet)
-      }
-    }
 
     //自機キャラが攻撃する時に出現する弾のクラス
     class Bullet {
