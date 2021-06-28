@@ -14,6 +14,7 @@
     "use strict";
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
+    
 
 
     const endImage = new Image();//ゲームオーバの情報を入れる変数
@@ -30,8 +31,11 @@
       constructor() {
         this.enemyCharacters = []; //生成された敵のインスタンスが入る配列
         this.bullets = []; //生成された攻撃の弾のインスタンスが入る配列
-        window.onkeydown = () => { 
-          this.chara.input(event)}
+
+        // onkeydownプロパティにcharaクラスのinputメソッドを実行させる
+        window.onkeydown = () => {
+          this.chara.input(event)
+        }
       }
 
 
@@ -45,9 +49,9 @@
           const eneChara = new Enemy(x, y);
           this.enemyCharacters.push(eneChara);
         }
-
       }
-      //自機キャラの動きと弾のインスタンスの生成　スペースを押して
+
+
       //三平方の定理を使って、距離を判定するメソッド
       calcDistance = () => {
         return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
@@ -68,13 +72,7 @@
         //自機キャラが描かれる。初期位置
         ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70);
 
-
-        //自機キャラの動き
-
-        window.onkeydown = this.chara.input();
-
-        //自機キャラの攻撃を実行し、弾のインスタンスを生成
-
+        //弾の配列にあるインスタンスそれぞれに弾クラスのmoveメソッドを実行し動きを描く
         this.bullets.forEach(bullet => {
           bullet.move();
         });
@@ -114,7 +112,7 @@
         }
       }
 
-      //自機が入力に応じて何かしら動く
+      //キーを入力されたら自機キャラが動く
       input = event => {
         console.log(event)
         switch (event.code) {
@@ -146,10 +144,11 @@
         this.hp -= 10;
       }
 
-      //弾オブジェクトのインスタンスを生成するメソッド
+      //弾オブジェクトのインスタンスを生成するメソッド　弾を生成する
       attack = () => {
         const bullet = new Bullet(this.x, this.y - 30);
-        bullets.push(bullet)
+        console.log(bullet);
+        this.bullets.push(bullet);
       }
     }
 
