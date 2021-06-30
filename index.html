@@ -14,7 +14,7 @@
     "use strict";
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
-    
+
 
 
     const endImage = new Image();//ゲームオーバの情報を入れる変数
@@ -23,7 +23,7 @@
     const clearImage = new Image();//ゲームクリアの情報を入れる変数
     clearImage.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/gameclear.png";
 
-    const MUTEKI_INTERVAL = 5;//ダメージを受けた後の無敵時間
+    //const MUTEKI_INTERVAL = 5;//ダメージを受けた後の無敵時間
 
 
     //ゲーム全体をコントロールクラス  このクラスの役割　どのようなメソッドが必要　その役割を整理する　どんな順番で動かすのか
@@ -53,16 +53,14 @@
 
 
       //三平方の定理を使って、距離を判定するメソッド
-      calcDistance = () => {
-        return Math.sqrt(Math.pow(this.x - x, 2) + Math.pow(this.y - y, 2));
+      calcDistance = (a, b) => {
+        return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
       }
 
       //マイフレーム実行するメソッド
       mainLoop = () => {
-
         // 描画を消す
         ctx.clearRect(0, 0, 800, 500);
-
 
         // 敵が動く
         this.enemyCharacters.forEach(enemy => {
@@ -76,12 +74,18 @@
         this.bullets.forEach(bullet => {
           bullet.move();
         });
+
+
+        // 敵と弾が当たったか判定 
+        if (this.calcDistance(eneChara,bullet) < 30) {
+          // 弾と敵を消す処理
+          enemyCharacters.find();
+          bullets.find();
+        }
+
       }
 
 
-      //指定したデータを描くメソッド
-      draw = () => {
-      }
 
       //ゲームオーバー画面を呼ぶメソッド
       gameover = () => {
