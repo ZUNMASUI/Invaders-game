@@ -77,12 +77,17 @@
 
 
         // 敵と弾が当たったか判定 
-        if (this.calcDistance(eneChara,bullet) < 30) {
-          // 弾と敵を消す処理
-          enemyCharacters.find();
-          bullets.find();
-        }
+        this.enemyCharacters.forEach(enemy => {
+          this.bullets.forEach(bullet => {
+            if(this.calcDistance(enemy,bullet)< 30){
+              //敵と弾のインスタンスが配列から消える
+　　　　　　　　
+            }
+          })
 
+
+
+        })
       }
 
 
@@ -196,6 +201,9 @@
         this.speedY = -5;
         this.image = new Image();
         this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/弾丸画像.png";
+        this.image.onload = () => {
+          ctx.drawImage(this.image, this.x, this.y, 30, 30)
+        }
       }
 
 
