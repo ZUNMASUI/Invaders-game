@@ -18,10 +18,10 @@
 
 
     const endImage = new Image();//ゲームオーバの情報を入れる変数
-    endImage.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/gameover.jpeg";
+    endImage.src = "https://github.com/ZUNMASUI/Invaders-game/blob/main/gameover.jpeg?raw=true";
 
     const clearImage = new Image();//ゲームクリアの情報を入れる変数
-    clearImage.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/gameclear.png";
+    clearImage.src = "https://github.com/ZUNMASUI/Invaders-game/blob/main/gameclear.png?raw=true";
 
     const MUTEKI_INTERVAL = 5;//ダメージを受けた後の無敵時間
 
@@ -120,7 +120,7 @@
         this.y = y
         this.hp = 100
         this.image = new Image();
-        this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/騎士画像.png";
+        this.image.src = "https://github.com/ZUNMASUI/Invaders-game/blob/main/%E9%A8%8E%E5%A3%AB%E7%94%BB%E5%83%8F.png?raw=true";
         this.muteki_interval = 0;
         this.image.onload = () => {
           ctx.drawImage(this.image, this.x, this.y, 70, 70)
@@ -177,7 +177,7 @@
         this.speedX = 3; //マイフレームx座標を動く速さ
         this.speedY = 2.5;//マイフレームy座標を動く速さ
         this.image = new Image();//敵キャラの画像情報についての変数 ★画像の横と縦を変数か
-        this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/pipo-enemy003.png";
+        this.image.src = "https://github.com/ZUNMASUI/Invaders-game/blob/main/pipo-enemy003.png?raw=true";
         this.image.onload = () => {
           ctx.drawImage(this.image, this.x, this.y, 70, 70)
         }
@@ -206,7 +206,7 @@
         this.y = y
         this.speedY = -5;
         this.image = new Image();
-        this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/弾丸画像.png";
+        this.image.src = "https://github.com/ZUNMASUI/Invaders-game/blob/main/%E5%BC%BE%E4%B8%B8%E7%94%BB%E5%83%8F.png?raw=true";
         this.image.onload = () => {
           ctx.drawImage(this.image, this.x, this.y, 30, 30)
         }
