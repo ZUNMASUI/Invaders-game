@@ -54,7 +54,7 @@
         bullets.forEach((bullet) => {
           var distance = this.calcDistance(bullet);
           if (distance <= 35) {
-            enemyCharacters = enemyCharacters.filter((enemy) => enemy !== this)
+            enemyCharacters = enemyCharacters.filter(enemy => enemy !== this)
           }
         })
       }
@@ -158,7 +158,7 @@
         } else {
           ctx.drawImage(this.image, this.x, this.y, 70, 70)
         }
-        this.muteki_interval -= 0.1;
+        this.muteki_interval -= 1;
       }
       hitCheck() { //当たり判定のメソッド
         if (this.muteki_interval > 0) {
