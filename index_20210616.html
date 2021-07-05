@@ -112,33 +112,33 @@
     // };
     // generateTree2();
 
-    // class Bullet {  //攻撃の為の弾のクラス
-    //   constructor(x, y) {
-    //     this.x = x
-    //     this.y = y
-    //     this.speedY = -5;
-    //     this.image = new Image();
-    //     this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/弾丸画像.png";
-    //   }
-    //   move() { //弾の動きのメソッド
-    //     this.y += this.speedY;
-    //   }
-    //   draw() {  //描くメソッド
-    //     this.move();
-    //     ctx.drawImage(this.image, this.x, this.y, 20, 20);
-    //   }
-    //   calcDistance(enemy) {
-    //     return Math.sqrt(Math.pow(this.x - enemy.x, 2) + Math.pow(this.y - enemy.y, 2));
-    //   }
-    //   // death() {
-    //   //   enemyCharacters.forEach((enemy) => {
-    //   //     var distance = this.calcDistance(enemy);
-    //   //     if (distance <= 35 ) {
-    //   //       bullets = bullets.filter((bullet) => bullet !== this)
-    //   //     }
-    //   //   })
-    //   // }
-    // }
+    class Bullet {  //攻撃の為の弾のクラス
+      constructor(x, y) {
+        this.x = x
+        this.y = y
+        this.speedY = -5;
+        this.image = new Image();
+        this.image.src = "/Users/masuishintarou/Documents/GitHub/Invaders-game/弾丸画像.png";
+      }
+      move() { //弾の動きのメソッド
+        this.y += this.speedY;
+      }
+      draw() {  //描くメソッド
+        this.move();
+        ctx.drawImage(this.image, this.x, this.y, 20, 20);
+      }
+      calcDistance(enemy) {
+        return Math.sqrt(Math.pow(this.x - enemy.x, 2) + Math.pow(this.y - enemy.y, 2));
+      }
+      // death() {
+      //   enemyCharacters.forEach((enemy) => {
+      //     var distance = this.calcDistance(enemy);
+      //     if (distance <= 35 ) {
+      //       bullets = bullets.filter((bullet) => bullet !== this)
+      //     }
+      //   })
+      // }
+    }
 
     class Character { //自機キャラのクラス
       constructor(x, y) {
@@ -252,10 +252,10 @@
     }
     mainloop();
 
-    // function stop() {// 全体の動作を止める関数
-    //   clearInterval(intervalId);
-    //   intervalId = null;
-    // }
+    function stop() {// 全体の動作を止める関数
+      clearInterval(intervalId);
+      intervalId = null;
+    }
   </script>
 </body>
 

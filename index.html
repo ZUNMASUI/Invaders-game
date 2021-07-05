@@ -69,7 +69,16 @@
         });
 
         //自機キャラが描かれる。初期位置
-        ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70);
+        let flame = Math.floor(this.chara.muteki_interval) % 2;
+        if (this.chara.muteki_interval > 0 && flame === 0) {
+          ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70);
+          ctx.fillStyle = '#f00';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        } else {
+          ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70)
+        }
+        this.chara.muteki_interval -= 0.1;
+
 
         //弾の配列にあるインスタンスそれぞれに弾クラスのmoveメソッドを実行し動きを描く
         this.bullets.forEach(bullet => {
@@ -89,15 +98,17 @@
           })
         });
 
-        //敵と自機の当たり判定し該当の場合はダメージが計算される
+        //敵と自機の当たり判定し該当の場合はダメージが計算される。HPに余裕があれば無敵インターバルが発動する。
         this.enemyCharacters.forEach(enemy => {
           if (this.calcDistance(enemy, this.chara) < 40) {
-            this.chara.muteki_interval = MUTEKI_INTERVAL
-            this.chara.damege();
-            console.log(this.chara.hp);
-            console.log(this.chara.muteki_interval);
-          }
-        })
+            if (this.chara.muteki_interval > 0) {
+              return
+            }
+                this.chara.hp -= 10;
+                this.chara.muteki_interval = MUTEKI_INTERVAL;
+                console.log(this.chara.hp);
+              }
+            })
 
         //敵キャラの配列が空になったらゲームクリア画面が呼ばれる。
         if (this.enemyCharacters.length === 0) {
@@ -118,7 +129,7 @@
       constructor(x, y, hp) {
         this.x = x
         this.y = y
-        this.hp = 100
+        this.hp = 30
         this.image = new Image();
         this.image.src = "https://github.com/ZUNMASUI/Invaders-game/blob/main/%E9%A8%8E%E5%A3%AB%E7%94%BB%E5%83%8F.png?raw=true";
         this.muteki_interval = 0;
@@ -157,7 +168,6 @@
       //体力を減少させる
       damege = () => {
         this.hp -= 5;
-        this.muteki_interval -= 0.2;
       }
 
       //弾オブジェクトのインスタンスを生成するメソッド　弾を生成する
