@@ -6,14 +6,33 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>インベーダー</title>
+  <style type="text/css">
+    p {
+      color: red;
+      font-size: 30px;
+      float: left;
+      padding: 10px 30px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
   <canvas id="canvas" style="background-color: rgb(149, 154, 154)" width="800" height="500"></canvas>
+  <p>自機キャラ体力</p>
+  <p id="charaHP"></p>
+  <button id="btn" onclick="game.mainLoop()">start</button>
+  <button id="re_btn" class = "hidden" onclick="game.mainLoop()">Restart</button>
   <script>
     "use strict";
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
+
+    //自機キャラの体力を表示される変数
+    const charaHP = document.getElementById("charaHP")
 
 
 
@@ -25,6 +44,29 @@
 
     const MUTEKI_INTERVAL = 5;//ダメージを受けた後の無敵時間
 
+    //ページが読み込まれるとアラートでゲームの案内をする
+    window.onload = function () {
+      alert("ゲームを開始するにはボタンを押して下さい！");
+    };
+
+    //スタートボタンを押すとhiddenが実行される。
+    const btn = document.getElementById('btn');
+    btn.addEventListener('click', function () {
+      btn.classList.add("hidden");
+    }, false);
+
+
+    //restartボタンを押すともう一度ゲームが始まる。
+    const reBtn = document.getElementById('re_btn');
+    reBtn.addEventListener('click', function () {
+
+      //再開するときに今ある敵の配列情報を空にしたい。
+      //game.enemyCharacters.length === 0;
+      game.initialize();
+      game.mainLoop();
+      reBtn.classList.add("hidden");
+    }, false);
+
 
     //ゲーム全体をコントロールクラス  このクラスの役割　どのようなメソッドが必要　その役割を整理する　どんな順番で動かすのか
     class Game {
@@ -32,18 +74,23 @@
         this.enemyCharacters = []; //生成された敵のインスタンスが入る配列
         this.bullets = []; //生成された攻撃の弾のインスタンスが入る配列
       }
-
+      //初期値の体力の表示
 
       //初期化 まず初めに実行される 自機キャラと敵キャラを初期位置に配置する。
       initialize = () => {
         const Chara = new Character(400, 400, 30);
         this.chara = Chara
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 15; i++) {
           let x = Math.floor(Math.random() * 800);
           let y = Math.floor(Math.random() * 100);
           const eneChara = new Enemy(x, y);
           this.enemyCharacters.push(eneChara);
         }
+
+        //キャラクターのHPを表示する。
+        charaHP.textContent = this.chara.hp
+
+
         // onkeydownプロパティにcharaクラスのinputメソッドを実行させる
         window.onkeydown = () => {
           this.chara.input(event)
@@ -56,6 +103,13 @@
         return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
       }
 
+
+      //ダメージを受けると描画を変える
+      damage = () => {
+        this.chara.hp -= 10;
+        this.chara.muteki_interval = MUTEKI_INTERVAL;
+        charaHP.textContent = this.chara.hp;
+      }
       //マイフレーム実行するメソッド
       mainLoop = () => {
 
@@ -78,6 +132,7 @@
           ctx.drawImage(this.chara.image, this.chara.x, this.chara.y, 70, 70)
         }
         this.chara.muteki_interval -= 0.1;
+        //console.log(this.chara.muteki_interval);
 
 
         //弾の配列にあるインスタンスそれぞれに弾クラスのmoveメソッドを実行し動きを描く
@@ -104,22 +159,24 @@
             if (this.chara.muteki_interval > 0) {
               return
             }
-                this.chara.hp -= 10;
-                this.chara.muteki_interval = MUTEKI_INTERVAL;
-                console.log(this.chara.hp);
-              }
-            })
+            this.damage();
+          }
+        })
 
         //敵キャラの配列が空になったらゲームクリア画面が呼ばれる。
         if (this.enemyCharacters.length === 0) {
           cancelAnimationFrame(loopID);
           ctx.drawImage(clearImage, 0, 0, 800, 500);
+          reBtn.classList.remove("hidden");
+          //alert("おめでとうございます！もう一度遊ぶにはrestartボタンを押して下さい！");
         }
 
         //自機キャラのHPが０になったらゲームクリア画面が呼ばれる。
         if (this.chara.hp === 0) {
           cancelAnimationFrame(loopID);
           ctx.drawImage(endImage, 0, 0, 800, 500);
+          reBtn.classList.remove("hidden");
+          //alert("残念でしたね！もう一度遊ぶにはrestartボタンを押して下さい！");
         }
       }
     }
@@ -129,7 +186,7 @@
       constructor(x, y, hp) {
         this.x = x
         this.y = y
-        this.hp = 30
+        this.hp = 20
         this.image = new Image();
         this.image.src = "https://github.com/ZUNMASUI/Invaders-game/blob/main/%E9%A8%8E%E5%A3%AB%E7%94%BB%E5%83%8F.png?raw=true";
         this.muteki_interval = 0;
@@ -166,9 +223,9 @@
       }
 
       //体力を減少させる
-      damege = () => {
-        this.hp -= 5;
-      }
+      // damege = () => {
+      //   this.hp -= 5;
+      // }
 
       //弾オブジェクトのインスタンスを生成するメソッド　弾を生成する
       attack = () => {
@@ -234,7 +291,6 @@
     //ゲームクラスからインスタンスを生成し変数gameへ格納　その後初めのinitializeメソッドの実行
     const game = new Game();
     game.initialize();
-    game.mainLoop();
 
 
 
