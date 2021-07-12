@@ -7,11 +7,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>インベーダー</title>
   <style type="text/css">
+    canvas {
+      text-align: center;
+      margin: 20px;
+    }
+
     p {
       color: red;
-      font-size: 30px;
+      font-size: 20px;
       float: left;
-      padding: 10px 30px;
+      text-align: center;
+      width: 150px;
+      height: 50px;
+      margin-left: 30px;
+      margin-right: auto;
+    }
+
+    button {
+      position: relative;
+      margin: auto;
+      color:rgb(20, 204, 97);
+      border-radius: 5px;
+      text-transform: uppercase;
+      text-align: center;
+      font-size: 20px;
+      cursor: pointer;
     }
 
     .hidden {
@@ -21,11 +41,11 @@
 </head>
 
 <body>
-  <canvas id="canvas" style="background-color: rgb(149, 154, 154)" width="800" height="500"></canvas>
+  <canvas id="canvas" style="background-color: rgb(20, 204, 97)" width="800" height="500"></canvas>
   <p>自機キャラ体力</p>
   <p id="charaHP"></p>
-  <button id="btn" onclick="game.mainLoop()">start</button>
-  <button id="re_btn" class = "hidden" onclick="game.mainLoop()">Restart</button>
+  <button id="btn" onclick="game.mainLoop()"><span>START</span></button>
+  <button id="re_btn" class="hidden" onclick="game.mainLoop()"><span>RESTART</span></button>
   <script>
     "use strict";
     const canvas = document.getElementById("canvas");
